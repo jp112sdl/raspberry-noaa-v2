@@ -72,7 +72,7 @@ while [ "$(date --date="@${end_epoch_time}" +"%s")" -le "${END_TIME_MS}" ]; do
     log "Scheduling capture for: ${safe_obj_name} ${file_date_ext} ${max_elev}" "INFO"
     job_output=$(echo "${NOAA_HOME}/scripts/${RECEIVE_SCRIPT} \"${OBJ_NAME}\" ${safe_obj_name}-${file_date_ext} ${TLE_FILE} \
                                                               ${start_epoch_time} ${timer} ${max_elev} ${direction} ${pass_side}" \
-                | at "$(date --date="TZ=\"UTC\" ${start_datetime}" +"%H:%M %D")" 2>&1)
+                | at "$(date --date="TZ=\"UTC\" ${start_datetime}" +"%H:%M %D")" -M 2>&1)
 
     # attempt to capture the job id if job scheduling succeeded
     at_job_id=$(echo $job_output | sed -n 's/.*job \([0-9]\+\) at.*/\1/p')
