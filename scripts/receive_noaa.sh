@@ -355,6 +355,23 @@ if [ $has_one_image -eq 1 ]; then
                        ON predict_passes.pass_start = decoded_passes.pass_start \
                        WHERE decoded_passes.id = $pass_id \
                      );"
+                     
+  # handle Pushover pushing if enabled
+  if [ "${ENABLE_PUSHOVER_PUSH}" == "true" ]; then
+    pushover_push_annotation=""
+    if [ "${GROUND_STATION_LOCATION}" != "" ]; then
+      pushover_push_annotation="Ground Station: ${GROUND_STATION_LOCATION}<br/>"
+    fi
+    pushover_push_annotation="${pushover_push_annotation}<b>Start: </b>${capture_start}<br/>"
+    pushover_push_annotation="${pushover_push_annotation}<b>Max Elev: </b>${SAT_MAX_ELEVATION}° ${PASS_SIDE}<br/>"
+    #pushover_push_annotation="${pushover_push_annotation}<b>Sun Elevation: </b>${SUN_ELEV}°<br/>"
+    #pushover_push_annotation="${pushover_push_annotation}<b>Gain: </b>${gain} | ${PASS_DIRECTION}<br/>"
+  
+    pushover_push_annotation="${pushover_push_annotation} <a href=${PUSHOVER_LINK_URL}?pass_id=${pass_id}>BROWSER LINK</a>";
+  
+    ${PUSH_PROC_DIR}/push_pushover.sh "${pushover_push_annotation}" "${SAT_NAME}" $push_file_list
+  fi
+
 fi
 
 if [ "$DELETE_AUDIO" = true ]; then
