@@ -27,5 +27,7 @@ return array(
   "successful_delete_capture" => "Capture erfolgreich gelöscht",
   "successful_delete_pass" => "Pass erfolgreich gelöscht",
   "travel_direction" => "Richtung",
+  "northbound" => "nordwärts",
+  "southbound" => "südwärts",
 );
 ?>

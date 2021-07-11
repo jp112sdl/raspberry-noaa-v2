@@ -73,7 +73,7 @@
               {% endif %}
             </td>
             <td class="text-center d-none d-sm-table-cell">{% if pass.pass_start_azimuth != "" %}{{ pass.pass_start_azimuth }}&#176;{% endif %}</td>
-            <td class="text-center d-none d-sm-table-cell">{% if pass.direction != "" %}{{ pass.direction }}{% endif %}</td>
+            <td class="text-center d-none d-sm-table-cell">{% if pass.direction == "Northbound" %} {{ lang['northbound'] }} {% else %} {{ lang['southbound'] }} {% endif %}</td>
           </tr>
 
           {% set prev_pass_end = pass.pass_end %}

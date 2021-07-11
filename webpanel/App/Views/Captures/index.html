@@ -50,7 +50,7 @@
                 <strong>{{ lang.pass_start_azimuth }}: </strong>{{ capture.pass_start_azimuth }}&#176;<br>
               {% endif %}
               {% if capture.direction != '' %}
-                <strong>{{ lang.travel_direction }}: </strong>{{ capture.direction }}<br>
+                <strong>{{ lang.travel_direction }}: </strong>{% if capture.direction == 'Northbound' %} {{ lang.northbound }} {% else %} {{ lang.southbound }} {% endif %}<br>
               {% endif %}
               <strong>{{ lang.pass_start }}: </strong>{{ capture.pass_start|date(constant('Config\\Config::DATETIME_FORMAT')) }}<br>
               <strong>{{ lang.gain }}: </strong>
