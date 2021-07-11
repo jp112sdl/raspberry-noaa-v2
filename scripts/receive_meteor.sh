@@ -350,12 +350,12 @@ elif [ "$METEOR_RECEIVER" == "gnuradio" ]; then
       if [ -f "${IMAGE_FILE_BASE}-122-rectified.jpg" ]; then
         ${PUSH_PROC_DIR}/push_email.sh "${EMAIL_PUSH_ADDRESS}" "${IMAGE_FILE_BASE}-122-rectified.jpg" "${push_annotation}" >> $NOAA_LOG 2>&1
       fi
-      if [ -f "${IMAGE_FILE_BASE}-ir-122-rectified.jpg" ]; then
-        ${PUSH_PROC_DIR}/push_email.sh "${EMAIL_PUSH_ADDRESS}" "${IMAGE_FILE_BASE}-ir-122-rectified.jpg" "${push_annotation}" >> $NOAA_LOG 2>&1
-      fi
-      if [ -f "${IMAGE_FILE_BASE}-col-122-rectified.jpg" ]; then
-        ${PUSH_PROC_DIR}/push_email.sh "${EMAIL_PUSH_ADDRESS}" "${IMAGE_FILE_BASE}-col-122-rectified.jpg" "${push_annotation}" >> $NOAA_LOG 2>&1
-      fi
+      #if [ -f "${IMAGE_FILE_BASE}-ir-122-rectified.jpg" ]; then
+      #  ${PUSH_PROC_DIR}/push_email.sh "${EMAIL_PUSH_ADDRESS}" "${IMAGE_FILE_BASE}-ir-122-rectified.jpg" "${push_annotation}" >> $NOAA_LOG 2>&1
+      #fi
+      #if [ -f "${IMAGE_FILE_BASE}-col-122-rectified.jpg" ]; then
+      #  ${PUSH_PROC_DIR}/push_email.sh "${EMAIL_PUSH_ADDRESS}" "${IMAGE_FILE_BASE}-col-122-rectified.jpg" "${push_annotation}" >> $NOAA_LOG 2>&1
+      #fi
     fi
 
     if [ "${ENABLE_DISCORD_PUSH}" == "true" ]; then
