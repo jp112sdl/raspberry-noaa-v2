@@ -57,4 +57,4 @@ NOAA18_FREQ="137.9125"
 NOAA19_FREQ="137.1000"
 
 # current date and time
-export START_DATE=$(date '+%d-%m-%Y %H:%M')
+export START_DATE=$(date '+%d.%m.%Y %H:%M')
