@@ -55,7 +55,7 @@
         {% for pass in pass.list %}
           {% set pass_start = pass.pass_start|date('H:i:s') %}
           {% set pass_end = pass.pass_end|date('H:i:s') %}
-          {% set cur_date = pass.pass_start|date('m/d/y') %}
+          {% set cur_date = pass.pass_start|date('d.m.y') %}
 
           {% if last_date < cur_date %}
             <tr class="date-separator">
@@ -69,8 +69,8 @@
               <button type="button" class="btn btn-sm btn-danger delete-capture" data-toggle="modal"
                                    data-pass-start-id="{{ pass.pass_start }}"
                                    data-sat-name="{{ pass.sat_name }}"
-                                   data-pass-start="{{ pass.pass_start|date('m/d/y H:i:s') }}"
-                                   data-pass-end="{{ pass.pass_end|date('m/d/y H:i:s') }}"
+                                   data-pass-start="{{ pass.pass_start|date('d.m.y H:i:s') }}"
+                                   data-pass-end="{{ pass.pass_end|date('d.m.y H:i:s') }}"
                                    data-target="#confirmDeletePass">X</button>
             </td>
             <td{% if prev_pass_end >= pass.pass_start %} class="conflict"{% endif %}>
