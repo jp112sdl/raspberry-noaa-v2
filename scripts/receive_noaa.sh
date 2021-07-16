@@ -188,7 +188,6 @@ has_one_image=0
 push_file_list=""
 for enhancement in $ENHANCEMENTS; do
   export ENHANCEMENT=$enhancement
-  log "Decoding image" "INFO"
 
   # determine what frequency based on NOAA variant
   proc_script=""
@@ -227,6 +226,8 @@ for enhancement in $ENHANCEMENTS; do
       proc_script="noaa_avi.sh"
       ;;
   esac
+  
+  log "Decoding $enhancement image" "INFO"
 
   if [ -z "${proc_script}" ]; then
     log "No image processor found for $enhancement - skipping." "ERROR"
@@ -245,7 +246,8 @@ for enhancement in $ENHANCEMENTS; do
 
         # capture list of files to push to Twitter
         push_file_list="${push_file_list} ${IMAGE_FILE_BASE}-$enhancement.jpg"
-
+        log "Decoding $enhancement image done. push_file_list: ${push_file_list} " "INFO"
+        
         # determine if auto-gain is set - handles "0" and "0.0" floats
         gain=$GAIN
         if [ $(echo "$GAIN==0"|bc) -eq 1 ]; then
