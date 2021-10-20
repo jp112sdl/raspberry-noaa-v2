@@ -48,7 +48,7 @@ IMAGE_FILE_BASE="${IMAGE_OUTPUT}/${FILENAME_BASE}"
 IMAGE_THUMB_BASE="${IMAGE_OUTPUT}/thumb/${FILENAME_BASE}"
 
 # check if there is enough free memory to store pass on RAM
-FREE_MEMORY=$(free -m | grep Mem | awk '{print $4}')
+FREE_MEMORY=$(free -m | grep Mem | awk '{print $7}')
 if [ "$FREE_MEMORY" -lt $METEOR_M2_MEMORY_TRESHOLD ]; then
   log "The system doesn't have enough space to store a Meteor pass on RAM" "INFO"
   log "Free : ${FREE_MEMORY} ; Required : ${METEOR_M2_MEMORY_TRESHOLD}" "INFO"
@@ -161,8 +161,9 @@ if [ "$METEOR_RECEIVER" == "rtl_fm" ]; then
 
   # how are we about memory usage at this point ?
   FREE_MEMORY=$(free -m | grep Mem | awk '{print $4}')
+  AVAILABLE_MEMORY=$(free -m | grep Mem | awk '{print $7}')
   RAMFS_USAGE=$(du -sh ${RAMFS_AUDIO} | awk '{print $1}')
-  log "Free memory : ${FREE_MEMORY} ; Total RAMFS usage : ${RAMFS_USAGE}" "INFO"
+  log "Free memory : ${FREE_MEMORY} ; Available memory : ${AVAILABLE_MEMORY} ; Total RAMFS usage : ${RAMFS_USAGE}" "INFO"
 
   if [ "$DELETE_AUDIO" = true ]; then
     log "Deleting audio files" "INFO"
