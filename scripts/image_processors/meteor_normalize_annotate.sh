@@ -56,7 +56,7 @@ $SCRIPTS_DIR/tools/jinja2_to_file.py "${NOAA_HOME}/config/annotation/annotation.
 find $NOAA_HOME/config/annotation/* -type f -not -name "*.j2" -exec cp {} "${tmp_dir}/" \;
 
 # generate annotation png and crop to content
-$WKHTMLTOIMG --enable-local-file-access --format png --quality 100 --transparent "file://${rendered_file}" "${annotation}"
+$WKHTMLTOIMG --enable-local-file-access --format png --quality 100 "file://${rendered_file}" "${annotation}"
 $CONVERT -colorspace RGB -format png "${annotation}" -background none -flatten -trim +repage "${annotation}"
 
 # resize the annotation appropriately, keeping aspect ratio
@@ -93,14 +93,14 @@ if [ $extend_annotation -eq 1 ]; then
     gravity_var="North"
   fi
 
-  $CONVERT -quality 100 -colorspace RGB \
+  $CONVERT -interlace Line -quality 100 -colorspace RGB \
            -format jpg "${INPUT_JPG}" \
            -gravity "${gravity_var}" \
            -background black \
            -splice "0x${img_expand_px}" "${tmp_out}"
 
   # generate final image with annotation
-  $CONVERT -format jpg "${tmp_out}" "${annotation}" -colorspace RGB \
+  $CONVERT -interlace Line -format jpg "${tmp_out}" "${annotation}" -colorspace RGB \
            -gravity $IMAGE_ANNOTATION_LOCATION \
            -geometry +0+10 \
            -composite "${OUTPUT_JPG}"
