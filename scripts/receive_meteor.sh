@@ -157,9 +157,9 @@ polar_direction=0
 if [ "$METEOR_RECEIVER" == "rtl_fm" ]; then
   log "Recording with RTL_FM at ${METEOR_M2_3_FREQ} MHz..." "INFO"
   if [ "${GAIN}" == 0 ]; then
-    timeout "${CAPTURE_TIME}" $RTL_FM -d ${SDR_DEVICE_ID} ${BIAS_TEE} -M raw -f "${METEOR_M2_3_FREQ}"M -p "${FREQ_OFFSET}" -s 288k | $SOX -t raw -r 288k -c 2 -b 16 -e s - -t wav "${RAMFS_AUDIO_BASE}.wav" rate 96k >> $NOAA_LOG 2>&1
+    timeout "${CAPTURE_TIME}" $RTL_FM -d ${SDR_DEVICE_ID} ${BIAS_TEE} -M raw -f "${METEOR_M2_3_FREQ}"M -p "${FREQ_OFFSET}" -E dc -s 288k | $SOX -t raw -r 288k -c 2 -b 16 -e s - -t wav "${RAMFS_AUDIO_BASE}.wav" rate 96k >> $NOAA_LOG 2>&1
   else
-    timeout "${CAPTURE_TIME}" $RTL_FM -d ${SDR_DEVICE_ID} ${BIAS_TEE} -M raw -f "${METEOR_M2_3_FREQ}"M -p "${FREQ_OFFSET}" -s 288k -g "${GAIN}" | $SOX -t raw -r 288k -c 2 -b 16 -e s - -t wav "${RAMFS_AUDIO_BASE}.wav" rate 96k >> $NOAA_LOG 2>&1
+    timeout "${CAPTURE_TIME}" $RTL_FM -d ${SDR_DEVICE_ID} ${BIAS_TEE} -M raw -f "${METEOR_M2_3_FREQ}"M -p "${FREQ_OFFSET}" -E dc -s 288k -g "${GAIN}" | $SOX -t raw -r 288k -c 2 -b 16 -e s - -t wav "${RAMFS_AUDIO_BASE}.wav" rate 96k >> $NOAA_LOG 2>&1
   fi
   sleep 2
 elif [ "$METEOR_RECEIVER" == "gnuradio" ]; then
