@@ -98,6 +98,12 @@ else
     bias_tee_option=""
 fi
 
+# if there are services we have to stop during recording, we have to stop them now
+for svc in ${PAUSE_SERVICES}; do
+  log "Stopping service $svc" "INFO"
+  sudo service $svc stop
+done
+
 # check if there is enough free memory to store pass on RAM
 FREE_MEMORY=$(free -m | grep Mem | awk '{print $7}')
 if [ "$FREE_MEMORY" -lt $METEOR_M2_MEMORY_THRESHOLD ]; then
@@ -181,6 +187,14 @@ elif [ "$METEOR_RECEIVER" == "satdump_live" ]; then
 else
   log "Receiver type '$METEOR_RECEIVER' not valid" "ERROR"
 fi
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# if there are services we have to stop during recording, we can restart them now
+for svc in ${PAUSE_SERVICES}; do
+  log "Starting service $svc" "INFO"
+  sudo service $svc start
+done
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

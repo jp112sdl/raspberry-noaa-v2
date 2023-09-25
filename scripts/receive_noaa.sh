@@ -70,6 +70,12 @@ AUDIO_FILE_BASE="${NOAA_AUDIO_OUTPUT}/${FILENAME_BASE}"
 IMAGE_FILE_BASE="${IMAGE_OUTPUT}/${FILENAME_BASE}"
 IMAGE_THUMB_BASE="${IMAGE_OUTPUT}/thumb/${FILENAME_BASE}"
 
+# if there are services we have to stop during recording, we have to stop them now
+for svc in ${PAUSE_SERVICES}; do
+  log "Stopping $svc" "INFO"
+  sudo service $svc stop
+done
+
 # check if there is enough free memory to store pass on RAM
 FREE_MEMORY=$(free -m | grep Mem | awk '{print $7}')
 if [ "$FREE_MEMORY" -lt $NOAA_MEMORY_THRESHOLD ]; then
@@ -183,6 +189,14 @@ fi
 
 # wait for files to close
 sleep 2
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# if there are services we have to stop during recording, we can restart them now
+for svc in ${PAUSE_SERVICES}; do
+  log "Starting service $svc" "INFO"
+  sudo service $svc start
+done
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

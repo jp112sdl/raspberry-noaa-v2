@@ -196,7 +196,8 @@
     "pushover_link_url":          { "type": "string" },
     "pushover_apitoken":          { "type": "string" },
     "pushover_user":              { "type": "string" },
-    "pushover_prio":              { "type": "number" }
+    "pushover_prio":              { "type": "number" },
+    "pause_services":             { "type": "string" }
   },
   "required": [
     "latitude",
@@ -307,5 +308,6 @@
     "pushover_link_url",
     "pushover_apitoken",
     "pushover_user",
-    "pushover_prio"]
+    "pushover_prio",
+    "pause_services"]
 }
