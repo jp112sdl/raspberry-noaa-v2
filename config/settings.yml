@@ -285,4 +285,7 @@ slack_push_url: ''
 slack_push_to: ''
 slack_link: 'https://XXXX/captures/listImages'
 enable_matrix_push: false
+
+pause_services: ''
+pause_services_restart_immediately: false
 ...

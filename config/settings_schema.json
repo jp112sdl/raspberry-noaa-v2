@@ -197,7 +197,8 @@
     "pushover_apitoken":          { "type": "string" },
     "pushover_user":              { "type": "string" },
     "pushover_prio":              { "type": "number" },
-    "pause_services":             { "type": "string" }
+    "pause_services":             { "type": "string" },
+    "pause_services_restart_immediately": { "type": "boolean" }
   },
   "required": [
     "latitude",
@@ -309,5 +310,6 @@
     "pushover_apitoken",
     "pushover_user",
     "pushover_prio",
-    "pause_services"]
+    "pause_services",
+    "pause_services_restart_immediately"]
 }

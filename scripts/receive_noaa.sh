@@ -72,7 +72,7 @@ IMAGE_THUMB_BASE="${IMAGE_OUTPUT}/thumb/${FILENAME_BASE}"
 
 # if there are services we have to stop during recording, we have to stop them now
 for svc in ${PAUSE_SERVICES}; do
-  log "Stopping $svc" "INFO"
+  log "Stopping service $svc" "INFO"
   sudo service $svc stop
 done
 
@@ -192,11 +192,13 @@ sleep 2
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-# if there are services we have to stop during recording, we can restart them now
-for svc in ${PAUSE_SERVICES}; do
-  log "Starting service $svc" "INFO"
-  sudo service $svc start
-done
+# if there are services we have to stop during recording, we can restart them now, if they have to start immediately after recording / capturing
+if [[ "${PAUSE_SERVICES_RESTART_IMMEDIATELY}" == "true" ]]; then
+  for svc in ${PAUSE_SERVICES}; do
+    log "Starting service (immediately after recording) $svc" "INFO"
+    sudo service $svc start
+  done
+fi
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -465,6 +467,18 @@ else
     # If no matching images are found, there is no need to push images
     log "No images found - not pushing anywhere" "INFO"
 fi
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# if there are services we have to stop during recording, we can restart them now, if they have to start at the end of processing
+if [[ "${PAUSE_SERVICES_RESTART_IMMEDIATELY}" == "false" ]]; then
+  for svc in ${PAUSE_SERVICES}; do
+    log "Starting service (at the end of processing)  $svc" "INFO"
+    sudo service $svc start
+  done
+fi
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # calculate and report total time for capture
 TIMER_END=$(date '+%s')

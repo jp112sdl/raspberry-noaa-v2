@@ -190,11 +190,13 @@ fi
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-# if there are services we have to stop during recording, we can restart them now
-for svc in ${PAUSE_SERVICES}; do
-  log "Starting service $svc" "INFO"
-  sudo service $svc start
-done
+# if there are services we have to stop during recording, we can restart them now, if they have to start immediately after recording / capturing
+if [[ "${PAUSE_SERVICES_RESTART_IMMEDIATELY}" == "true" ]]; then
+  for svc in ${PAUSE_SERVICES}; do
+    log "Starting service (immediately after recording) $svc" "INFO"
+    sudo service $svc start
+  done
+fi
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -467,6 +469,18 @@ if [ -n "$(find /srv/images -maxdepth 1 -type f -name "$(basename "$IMAGE_FILE_B
 else
   log "No images found, not pushing anything" "INFO"
 fi
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# if there are services we have to stop during recording, we can restart them now, if they have to start at the end of processing
+if [[ "${PAUSE_SERVICES_RESTART_IMMEDIATELY}" == "false" ]]; then
+  for svc in ${PAUSE_SERVICES}; do
+    log "Starting service (at the end of processing) $svc" "INFO"
+    sudo service $svc start
+  done
+fi
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # calculate and report total time for capture
 TIMER_END=$(date '+%s')
