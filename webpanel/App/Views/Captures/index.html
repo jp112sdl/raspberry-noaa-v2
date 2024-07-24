@@ -5,6 +5,41 @@
 <link rel="stylesheet" type="text/css" href="/assets/css/captures.css">
 {% endblock %}
 
+{% block js_includes %}
+  <script>
+    window.onload = function() {
+	  var chkBox15 = document.getElementById('cbNOAA15');
+	  var chkBox18 = document.getElementById('cbNOAA18');
+	  var chkBox19 = document.getElementById('cbNOAA19');
+	  var chkBoxM23 = document.getElementById('cbMETEORM23');
+      const queryString = window.location.search;
+	  const urlParams = new URLSearchParams(queryString);
+      const satellite_names = urlParams.get('satellite_names')
+	  if (satellite_names != null) {
+	    chkBox15.checked = (satellite_names.includes('NOAA 15'));
+	    chkBox18.checked = (satellite_names.includes('NOAA 18'));
+	    chkBox19.checked = (satellite_names.includes('NOAA 19'));
+	    chkBoxM23.checked = (satellite_names.includes('METEOR-M2 3'));
+	  }
+    } 
+	
+    function cbToggle() {
+	  var chkBox15 = document.getElementById('cbNOAA15');
+	  var chkBox18 = document.getElementById('cbNOAA18');
+	  var chkBox19 = document.getElementById('cbNOAA19');
+	  var chkBoxM23 = document.getElementById('cbMETEORM23');
+      
+	  var url="captures?page_no=1&satellite_names=";
+	  if (chkBox15.checked) {  url += "NOAA 15,"; }
+	  if (chkBox18.checked) {  url += "NOAA 18,"; }
+	  if (chkBox19.checked) {  url += "NOAA 19,"; }
+	  if (chkBoxM23.checked) { url += "METEOR-M2 3"; }
+	  
+      window.location.href = url;
+    }
+  </script>
+{% endblock %}
+
 {% block body %}
 <nav aria-label="page" id="pagination" class="mb-0">
   {% include('Captures/pagination.html') %}
@@ -13,18 +48,27 @@
 <div class="page-count-summary mb-0 mx-2 my-1">
   {{ "#{lang['page']} #{cur_page} #{lang['of']} #{page_count}" }}
 </div>
+<div class="container-sm">
+  <div class="form-group page-count-summary mb-0 mx-2 my-1">
+    <label class="col-md-2 checkbox-inline">NOAA</label><label class="col-md-2 checkbox-inline" for="cbNOAA15">   <input type="checkbox" class="form-check-input" id="cbNOAA15"    checked onchange="cbToggle()">15</label>
+    <label class="col-md-2 checkbox-inline" for="cbNOAA18">   <input type="checkbox" class="form-check-input" id="cbNOAA18"    checked onchange="cbToggle()">18</label>
+    <label class="col-md-2 checkbox-inline" for="cbNOAA19">   <input type="checkbox" class="form-check-input" id="cbNOAA19"    checked onchange="cbToggle()">19</label>
+    <label class="col-md-2 checkbox-inline" for="cbMETEORM23">METEOR-M2 3</label><input type="checkbox" class="form-check-input" id="cbMETEORM23" checked onchange="cbToggle()">
+  </div>
+</div>
 
 {% set col_count = 0 %}
 {% set i = 0 %}
 {% set img_count = capture.list|length %}
 
 {% set meteor_suffixes = [
-        '-321-corrected.jpg',
+        '-221-corrected.jpg',
+        '-124-corrected.jpg',
         '-equidistant_321.jpg',
         '-mercator_321.jpg',
         '-spread_321.jpg',
         '-spread_123.jpg',
-        '-221-corrected.jpg',
+        '-321-corrected.jpg',
         '-equidistant_221.jpg',
         '-mercator_321.jpg',
         '-spread_221.jpg',
@@ -78,7 +122,7 @@
           <strong>{{ lang.pass_start_azimuth }}: </strong>{{ capture.pass_start_azimuth }}&#176;<br>
         {% endif %}
         {% if capture.direction != '' %}
-          <strong>{{ lang.travel_direction }}: </strong>{{ capture.direction }}<br>
+          <strong>{{ lang.travel_direction }}: </strong>{% if capture.direction == 'Northbound' %} {{ lang.northbound }} {% else %} {{ lang.southbound }} {% endif %}<br>
         {% endif %}
         <strong>{{ lang.pass_start }}: </strong>{{ capture.pass_start|date(constant('Config\\Config::DATETIME_FORMAT')) }}<br>
         <strong>{{ lang.gain }}: </strong>
@@ -100,4 +144,7 @@
     </div>
   {% endif %}
 {% endfor %}
+ <nav aria-label="page" id="pagination" class="mb-0">
+   {% include('Captures/pagination.html') %}
+ </nav>
 {% endblock %}

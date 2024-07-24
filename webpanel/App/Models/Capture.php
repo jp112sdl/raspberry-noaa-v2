@@ -12,7 +12,7 @@ class Capture extends \Lib\Model {
 
   # get a list of captures for the given page and total number
   # of configured images per page
-  public function getList($page, $img_per_page) {
+  public function getList($page, $img_per_page, $satellite_names) {
     $query = $this->db_conn->prepare("SELECT decoded_passes.id,
                                              predict_passes.pass_start,
                                              file_path,
@@ -27,9 +27,17 @@ class Capture extends \Lib\Model {
                                              FROM decoded_passes
                                              INNER JOIN predict_passes
                                                ON predict_passes.pass_start = decoded_passes.pass_start
-                                             ORDER BY decoded_passes.pass_start DESC LIMIT ? OFFSET ?;");
-    $query->bindValue(1, $img_per_page);
-    $query->bindValue(2, $img_per_page * ($page-1));
+											 WHERE predict_passes.sat_name IN (:sat0,:sat1,:sat2,:sat3) 
+                                             ORDER BY decoded_passes.pass_start DESC LIMIT :lim OFFSET :off ;");
+	
+
+    $satArray = explode(',', $satellite_names);
+    for($i=0; $i < count($satArray); $i++) {
+      $query->bindValue(':sat'.$i, \SQLite3::escapeString($satArray[$i]), SQLITE3_TEXT);
+    }
+    $query->bindValue(':lim', $img_per_page, SQLITE3_INTEGER);
+    $query->bindValue(':off', $img_per_page * ($page-1), SQLITE3_INTEGER);
+	
     $result = $query->execute();
 
     $captures = [];
@@ -68,8 +76,9 @@ class Capture extends \Lib\Model {
 
     # build enhancement paths based on satellite type
     switch($pass['sat_type']) {
-      case 0: // Meteor
+      case 0: // Meteor-M2
         if ($pass['daylight_pass'] == 1) {
+<<<<<<< Updated upstream
           $enhancements = [
               '-MSA_corrected.jpg',
               '-MSA_projected.jpg',
@@ -189,6 +198,11 @@ class Capture extends \Lib\Model {
               '-mercator_rain_67_composite.jpg',
               '-mercator_rain_68_composite.jpg'
           ];
+=======
+          $enhancements = ['-321_corrected.jpg','-321_projected.jpg','-221_corrected.jpg','-124_corrected.jpg','-221_projected.jpg','-654_corrected.jpg','-654_projected.jpg','-Night_Microphysics_corrected.jpg','-Night_Microphysics_projected.jpg','-Thermal_Channel_corrected.jpg','-Thermal_Channel_projected.jpg','-equidistant_321.jpg','-equidistant_221.jpg','-equidistant_654.jpg','-equidistant_IR.jpg','-equidistant_rain_IR.jpg','-mercator_321.jpg','-mercator_221.jpg','-mercator_654.jpg','-mercator_IR.jpg','-mercator_rain_IR.jpg','-spread_321.jpg','-spread_221.jpg','-spread_654.jpg','-spread_IR.jpg','-spread_rain_IR.jpg'];
+        } else {
+          $enhancements = ['-321_corrected.jpg','-321_projected.jpg','-221_corrected.jpg','-221_projected.jpg','-654_corrected.jpg','-654_projected.jpg','-Night_Microphysics_corrected.jpg','-Night_Microphysics_projected.jpg','-Thermal_Channel_corrected.jpg','-Thermal_Channel_projected.jpg','-equidistant_321.jpg','-equidistant_221.jpg','-equidistant_654.jpg','-equidistant_IR.jpg','-equidistant_rain_IR.jpg','-mercator_321.jpg','-mercator_221.jpg','-mercator_654.jpg','-mercator_IR.jpg','-mercator_rain_IR.jpg','-spread_321.jpg','-spread_221.jpg','-spread_654.jpg','-spread_IR.jpg','-spread_rain_IR.jpg'];
+>>>>>>> Stashed changes
         }
         break;
       case 1: // NOAA

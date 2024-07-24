@@ -66,7 +66,7 @@
 
           <tr{% if pass.is_active == false or pass_end < now %} class="inactive"{% endif %}>
             <td class="capture-select text-center align-middle">
-              <button type="button" class="btn btn-sm btn-danger delete-capture" data-toggle="modal"
+              <button type="button" class="btn btn-sm btn-outline-danger delete-capture" data-toggle="modal"
                                    data-pass-start-id="{{ pass.pass_start }}"
                                    data-sat-name="{{ pass.sat_name }}"
                                    data-pass-start="{{ pass.pass_start|date(constant('Config\\Config::DATETIME_FORMAT')) }}"

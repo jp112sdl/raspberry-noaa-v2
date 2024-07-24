@@ -76,7 +76,7 @@ class AdminController extends \Lib\Controller {
     if (array_key_exists('page_no', $args) and $args['page_no'] > 0) $page_number = $args['page_no'];
     if ($page_number > $total_pages) $page_number = $total_pages;
 
-    $capture->getList($page_number, Config::ADMIN_CAPTURES_PER_PAGE);
+    $capture->getList($page_number, Config::ADMIN_CAPTURES_PER_PAGE, 'NOAA 15,NOAA 18,NOAA 19,METEOR-M2 3');
     $args = array_merge($args, array('capture' => $capture,
                                      'cur_page' => $page_number,
                                      'page_count' => $total_pages,

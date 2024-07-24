@@ -6,10 +6,23 @@
 
 {% block body %}
 
- <div>
-         <p align="right"> Enhancement details <a href="../enhancement_details.html" target="_blank">information</a></p>
- </div>
 
+          
+            
+<table class="table table-bordered table-sm table-striped">
+  <tbody>
+    <tr>
+      <td class="text-center"><strong>{{ lang['pass_start'] }}: </strong>{{ capture.start_epoch|date(constant('Config\\Config::DATETIME_FORMAT')) }}</td>
+    </tr>
+    
+    <!--
+    <tr>
+      <td class="text-center"><strong>{{ lang['gain'] }}: </strong> {% if capture.gain == '0' %} Auto {% elseif capture.gain == '' %} Unknown {% else %} {{ capture.gain }} {% endif %}</td>
+    </tr>
+    -->
+  </tbody>
+</table>
+  
   {% set col_count = 0 %}
   {% set i = 0 %}
   {% set img_count = capture.enhancements|length %}
@@ -26,14 +39,7 @@
       <div class="card-body">
         <p class="card-text">
           <strong>{{ lang.enhancement }}: </strong>{{ enhancement|trim('-', side='left')|split('.')|slice(0,-1)|join }}<br>
-          <strong>{{ lang.gain }}: </strong>
-            {% if capture.gain == '0' %}
-              Auto
-            {% elseif capture.gain == '' %}
-              Unknown
-            {% else %}
-              {{ capture.gain }}
-            {% endif %}
+
         </p>
       </div>
     </div>

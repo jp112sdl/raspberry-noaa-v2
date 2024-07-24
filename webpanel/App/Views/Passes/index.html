@@ -5,32 +5,26 @@
 {% endblock %}
 
 {% block pre_body %}
-  <br><center><h1><strong>NOAA APT and Meteor LRPT Satellite Receiver</strong></h1></center><br>
   <div id="instruments" class="flex-container">
     {% if constant('Config\\Config::ENABLE_SATVIS') == 'true' %}
       <div id="satvis" class="d-none d-sm-block flex-child">
-        <iframe name="satvis" src="https://satvis.space/?elements=Point,Label,SensorCone&layers=ArcGis&terrain=None&gs={{ constant('Config\\Config::BASE_STATION_LAT') }},{{ constant('Config\\Config::BASE_STATION_LON') }}&tags=Weather"></iframe>
+        <iframe name="satvis" src="https://satvis.space/?elements=Point,Label,Orbit%20track,Sensor%20cone&layers=OfflineHighres&gs={{ constant('Config\\Config::BASE_STATION_LAT') }},{{ constant('Config\\Config::BASE_STATION_LON') }}&tags=Weather"></iframe>
       </div>
     {% endif %}
 
     {% if constant('Config\\Config::ENABLE_ANIMATION') == 'true' %}
       <div id="noaa-animation" class="d-none d-sm-block flex-child">
-        <video playsinline autoplay muted loop controls src="{{ constant('Config\\Config::ANIMATION_VIDEO_FILE') }}" width="100%" height="100%" type="video/webm, codecs=vp9"></video>
+        <video playsinline autoplay muted loop controls src="{{ constant('Config\\Config::ANIMATION_VIDEO_FILE') }}" width="100%" height="100%" type="video/mp4"></video>
       </div>
     {% endif %}
   </div>
 {% endblock %}
 
 {% block body %}
-<center>
-      <meta http-equiv="refresh" content="300" url="https://www.timeanddate.com/scripts/sunmap.php">
-      <img src="https://www.timeanddate.com/scripts/sunmap.php?iso=&amp;earth=1" width="100%" height="100%">
-      <meta img="sunmap.php" src-equiv="refresh" content="300">
-    </center>
   <table class="table table-bordered table-sm table-striped" id="passes">
     <thead class="thead-dark">
       <tr class="text-center">
-        <th scope="col">{{ lang['reception_status'] }}</th>
+        <th scope="col">&nbsp;</th>
         <th scope="col">{{ lang['satellite'] }}</th>
         <th scope="col">{{ lang['pass_start'] }}</th>
         <th scope="col">{{ lang['pass_end'] }}</th>
@@ -69,6 +63,8 @@
                 "text-center conflict"
               {% elseif now_ms > pass.pass_start and now_ms < pass.pass_end %} 
                 "text-center running" 
+              {% elseif pass.has_pidfile %}
+                "text-center in_progress"
               {% elseif now_ms < pass.pass_start %}
                 "text-center next" 
               {% else %}
@@ -76,9 +72,11 @@
               {% endif %}
                 >
               {% if pass.id %}
-                <i class="fa fa-check" data-toggle="tooltip" data-placement="right" title="{{ lang['completed_pass'] }}"></i>
+                <a href="captures/listImages?pass_id={{ pass.id }}" class="btn btn-outline-success btn-sm" role="button"><i class="fa fa-check" data-toggle="tooltip" data-placement="right" title="{{ lang['completed_pass'] }}"></i></a>
               {% elseif now_ms > pass.pass_start and now_ms < pass.pass_end %}
-                <i class="fa fa-spinner running-icon" data-toggle="tooltip" data-placement="right" title="{{ lang['running_pass'] }}"></i>
+                <i class="fa fa-circle running-icon" data-toggle="tooltip" data-placement="right" title="{{ lang['running_pass'] }}"></i>
+              {% elseif pass.has_pidfile %}
+                <i class="fa fa-spinner in_progress-icon" data-toggle="tooltip" data-placement="right" title="{{ lang['in_progress'] }}"></i>
               {% elseif prev_pass_end >= pass.pass_start %}
                 <i class="fa fa-exclamation-triangle conflict-icon" data-toggle="tooltip" data-placement="right" title="{{ lang['conflicting_pass'] }}"></i>
               {% elseif now_ms < pass.pass_start %}
@@ -89,7 +87,7 @@
             </td>
             <td>
               {% if constant('Config\\Config::ENABLE_SATVIS') == 'true' %}
-                <a href='https://satvis.space/?elements=Point,Label,SensorCone&layers=ArcGis&terrain=None&tags=Weather&sat={{ pass.sat_name }}&gs={{ constant('Config\\Config::BASE_STATION_LAT') }},{{ constant('Config\\Config::BASE_STATION_LON') }}' target='satvis'>{{ pass.sat_name }}</a>
+                <a href='https://satvis.space/?elements=Point,Label,Orbit%20track,Sensor%20cone&layers=OfflineHighres&tags=Weather&sat={{ pass.sat_name }}&gs={{ constant('Config\\Config::BASE_STATION_LAT') }},{{ constant('Config\\Config::BASE_STATION_LON') }}' target='satvis'>{{ pass.sat_name }}</a>
               {% else %}
                 {{ pass.sat_name }}
               {% endif %}
@@ -103,7 +101,7 @@
               {% endif %}
             </td>
             <td class="text-center d-none d-sm-table-cell">{% if pass.pass_start_azimuth != "" %}{{ pass.pass_start_azimuth }}&#176;{% endif %}</td>
-            <td class="text-center d-none d-sm-table-cell">{% if pass.direction != "" %}{{ pass.direction }}{% endif %}</td>
+            <td class="text-center d-none d-sm-table-cell">{% if pass.direction == "Northbound" %} {{ lang['northbound'] }} {% else %} {{ lang['southbound'] }} {% endif %}</td>
           </tr>
 
           {% set prev_pass_end = pass.pass_end %}
@@ -111,15 +109,6 @@
       {% endif %}
     </tbody>
   </table>
-
-  <br>
-  <center>
-  <h1>Coronal Mass Ejection Activity</h1>
-  <br>
-  <img src="https://sohowww.nascom.nasa.gov/data/LATEST/current_c2.gif" height=300 style="margin-right=2em; margin-bottom:2em;">
-  <img src="https://sohowww.nascom.nasa.gov/data/LATEST/current_c3.gif" height=300 style="margin-right=2em; margin-bottom:2em;">
-  <img src="https://stereo.gsfc.nasa.gov/beacon/latest_512/ahead_cor2_latest.jpg" height=300 style="margin-right=2em; margin-bottom:2em;">
-  </center>
 
 {% endblock %}
 

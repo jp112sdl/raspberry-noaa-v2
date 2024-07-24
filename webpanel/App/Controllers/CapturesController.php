@@ -15,7 +15,10 @@ class CapturesController extends \Lib\Controller {
     if (array_key_exists('page_no', $args) and $args['page_no'] > 0) $page_number = $args['page_no'];
     if ($page_number > $total_pages) $page_number = $total_pages;
 
-    $capture->getList($page_number, Config::CAPTURES_PER_PAGE);
+    $satellite_names = "NOAA 15,NOAA 18,NOAA 19,METEOR-M2 3";
+    if (array_key_exists('satellite_names', $args)) $satellite_names = $args['satellite_names'];
+
+    $capture->getList($page_number, Config::CAPTURES_PER_PAGE, $satellite_names);
     $args = array_merge($args, array('capture' => $capture,
                                      'cur_page' => $page_number,
                                      'page_count' => $total_pages));
