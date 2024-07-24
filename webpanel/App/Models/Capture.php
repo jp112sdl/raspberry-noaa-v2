@@ -78,7 +78,6 @@ class Capture extends \Lib\Model {
     switch($pass['sat_type']) {
       case 0: // Meteor-M2
         if ($pass['daylight_pass'] == 1) {
-<<<<<<< Updated upstream
           $enhancements = [
               '-MSA_corrected.jpg',
               '-MSA_projected.jpg',
@@ -198,11 +197,12 @@ class Capture extends \Lib\Model {
               '-mercator_rain_67_composite.jpg',
               '-mercator_rain_68_composite.jpg'
           ];
-=======
           $enhancements = ['-321_corrected.jpg','-321_projected.jpg','-221_corrected.jpg','-124_corrected.jpg','-221_projected.jpg','-654_corrected.jpg','-654_projected.jpg','-Night_Microphysics_corrected.jpg','-Night_Microphysics_projected.jpg','-Thermal_Channel_corrected.jpg','-Thermal_Channel_projected.jpg','-equidistant_321.jpg','-equidistant_221.jpg','-equidistant_654.jpg','-equidistant_IR.jpg','-equidistant_rain_IR.jpg','-mercator_321.jpg','-mercator_221.jpg','-mercator_654.jpg','-mercator_IR.jpg','-mercator_rain_IR.jpg','-spread_321.jpg','-spread_221.jpg','-spread_654.jpg','-spread_IR.jpg','-spread_rain_IR.jpg'];
         } else {
           $enhancements = ['-321_corrected.jpg','-321_projected.jpg','-221_corrected.jpg','-221_projected.jpg','-654_corrected.jpg','-654_projected.jpg','-Night_Microphysics_corrected.jpg','-Night_Microphysics_projected.jpg','-Thermal_Channel_corrected.jpg','-Thermal_Channel_projected.jpg','-equidistant_321.jpg','-equidistant_221.jpg','-equidistant_654.jpg','-equidistant_IR.jpg','-equidistant_rain_IR.jpg','-mercator_321.jpg','-mercator_221.jpg','-mercator_654.jpg','-mercator_IR.jpg','-mercator_rain_IR.jpg','-spread_321.jpg','-spread_221.jpg','-spread_654.jpg','-spread_IR.jpg','-spread_rain_IR.jpg'];
->>>>>>> Stashed changes
+          $enhancements = ['-321_corrected.jpg','-321_projected.jpg','-221_corrected.jpg','-124_corrected.jpg','-221_projected.jpg','-654_corrected.jpg','-654_projected.jpg','-Night_Microphysics_corrected.jpg','-Night_Microphysics_projected.jpg','-Thermal_Channel_corrected.jpg','-Thermal_Channel_projected.jpg','-equidistant_321.jpg','-equidistant_221.jpg','-equidistant_654.jpg','-equidistant_IR.jpg','-equidistant_rain_IR.jpg','-mercator_321.jpg','-mercator_221.jpg','-mercator_654.jpg','-mercator_IR.jpg','-mercator_rain_IR.jpg','-spread_321.jpg','-spread_221.jpg','-spread_654.jpg','-spread_IR.jpg','-spread_rain_IR.jpg'];
+        } else {
+          $enhancements = ['-321_corrected.jpg','-321_projected.jpg','-221_corrected.jpg','-221_projected.jpg','-654_corrected.jpg','-654_projected.jpg','-Night_Microphysics_corrected.jpg','-Night_Microphysics_projected.jpg','-Thermal_Channel_corrected.jpg','-Thermal_Channel_projected.jpg','-equidistant_321.jpg','-equidistant_221.jpg','-equidistant_654.jpg','-equidistant_IR.jpg','-equidistant_rain_IR.jpg','-mercator_321.jpg','-mercator_221.jpg','-mercator_654.jpg','-mercator_IR.jpg','-mercator_rain_IR.jpg','-spread_321.jpg','-spread_221.jpg','-spread_654.jpg','-spread_IR.jpg','-spread_rain_IR.jpg'];
         }
         break;
       case 1: // NOAA
